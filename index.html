@@ -2,61 +2,57 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Fluxo Empresa X - Lista de Tarefas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo Empresa X - Task Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Gerenciador de Tarefas - Empresa X</h1>
-    </header>
-
     <main>
+        <header>
+            <h1>Empresa X <span>| Task Flow</span></h1>
+        </header>
+
         <section id="entrada-tarefa">
-            <h2>Nova Tarefa</h2>
-            <form>
-                <label for="descricao">O que precisa ser feito?</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição da tarefa..." required>
+            <form id="form-tarefa">
+                <div class="input-group">
+                    <input type="text" id="titulo" placeholder="Título da tarefa" required>
+                    <textarea id="descricao" placeholder="Descrição detalhada do que precisa ser feito..."></textarea>
+                </div>
+                
+                <div class="controls">
+                    <select id="prioridade" required>
+                        <option value="" disabled selected>Prioridade</option>
+                        <option value="1">Nível 1 (Crítico)</option>
+                        <option value="2">Nível 2 (Alto)</option>
+                        <option value="3">Nível 3 (Médio)</option>
+                        <option value="4">Nível 4 (Baixo)</option>
+                    </select>
 
-                <label for="prioridade">Prioridade:</label>
-                <select id="prioridade" name="prioridade">
-                    <option value="1">Nível 1 (Crítico)</option>
-                    <option value="2">Nível 2 (Alto)</option>
-                    <option value="3">Nível 3 (Médio)</option>
-                    <option value="4">Nível 4 (Baixo)</option>
-                </select>
+                    <select id="periodo" required>
+                        <option value="" disabled selected>Prazo</option>
+                        <option value="diario">Diário</option>
+                        <option value="semanal">Semanal</option>
+                        <option value="mensal">Mensal</option>
+                        <option value="anual">Anual</option>
+                    </select>
 
-                <select id="periodo" name="periodo">
-                    <option value="diario">Diário</option>
-                    <option value="semanal">Semanal</option>
-                    <option value="mensal">Mensal</option>
-                    <option value="anual">Anual</option>
-                </select>
-
-                <button type="submit">Adicionar Tarefa</button>
+                    <button type="submit" id="btn-adicionar">Adicionar Tarefa</button>
+                </div>
             </form>
         </section>
 
         <hr>
 
-        <section id="exibicao-tarefas">
-            <h2>Minhas Tarefas</h2>
-            
+        <section id="lista-container">
+            <div class="stats">
+                <span>Tarefas Ativas: <strong id="contador">0</strong></span>
+            </div>
             <ul id="lista-tarefas">
-                <li class="tarefa-item">
-                    <span>Exemplo de tarefa pendente</span>
-                    <strong>Prioridade 1</strong>
-                    <button type="button">Concluir</button>
-                </li>
-            </ul>
-        </section>
-
-        <section id="dashboard-resumo">
-            <h2>Resumo por Setor</h2>
-            <div id="setores-container">
-                </div>
+                </ul>
         </section>
     </main>
 
+    <script src="script.js"></script>
 </body>
 </html>
