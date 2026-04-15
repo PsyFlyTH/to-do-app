@@ -1,5 +1,61 @@
-<html>
-  <body>
-    <div>HELLO WORLD</div>
-  </body>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Fluxo Empresa X - Lista de Tarefas</title>
+</head>
+<body>
+
+    <header>
+        <h1>Gerenciador de Tarefas - Empresa X</h1>
+    </header>
+
+    <main>
+        <section id="entrada-tarefa">
+            <h2>Nova Tarefa</h2>
+            <form>
+                <label for="descricao">O que precisa ser feito?</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Digite a descrição da tarefa..." required>
+
+                <label for="prioridade">Prioridade:</label>
+                <select id="prioridade" name="prioridade">
+                    <option value="1">Nível 1 (Crítico)</option>
+                    <option value="2">Nível 2 (Alto)</option>
+                    <option value="3">Nível 3 (Médio)</option>
+                    <option value="4">Nível 4 (Baixo)</option>
+                </select>
+
+                <select id="periodo" name="periodo">
+                    <option value="diario">Diário</option>
+                    <option value="semanal">Semanal</option>
+                    <option value="mensal">Mensal</option>
+                    <option value="anual">Anual</option>
+                </select>
+
+                <button type="submit">Adicionar Tarefa</button>
+            </form>
+        </section>
+
+        <hr>
+
+        <section id="exibicao-tarefas">
+            <h2>Minhas Tarefas</h2>
+            
+            <ul id="lista-tarefas">
+                <li class="tarefa-item">
+                    <span>Exemplo de tarefa pendente</span>
+                    <strong>Prioridade 1</strong>
+                    <button type="button">Concluir</button>
+                </li>
+            </ul>
+        </section>
+
+        <section id="dashboard-resumo">
+            <h2>Resumo por Setor</h2>
+            <div id="setores-container">
+                </div>
+        </section>
+    </main>
+
+</body>
 </html>
