@@ -1,107 +1,42 @@
 :root {
-    --bg: #f8f9fc;
-    --primary: #5c7cfa;
-    --text-main: #2e3440;
-    --text-sub: #4c566a;
-    --prio-1: #ff6b6b;
-    --prio-2: #fcc419;
-    --prio-3: #4dabf7;
-    --prio-4: #51cf66;
+    --bg: #f4f7fb;
+    --primary: #4361ee;
+    --danger: #ff4757;
+    --prio-1: #ff6b6b; --prio-2: #f9ca24; --prio-3: #48dbfb; --prio-4: #1dd1a1;
 }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: var(--bg);
-    margin: 0;
-    padding: 40px 20px;
+body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; color: #2f3542; }
+
+main { width: 100%; max-width: 650px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+
+header { text-align: center; margin-bottom: 30px; }
+header h1 span { color: var(--primary); font-weight: 800; }
+
+#form-tarefa { display: flex; flex-direction: column; gap: 15px; background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px dashed #ddd; }
+#titulo, #descricao { border: none; background: transparent; outline: none; width: 100%; }
+#titulo { font-size: 1.2rem; font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+
+.controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; }
+select, #btn-adicionar { padding: 10px; border-radius: 10px; border: 1px solid #eee; cursor: pointer; font-size: 0.9rem; }
+#btn-adicionar { background: var(--primary); color: white; border: none; transition: 0.2s; }
+#btn-adicionar:hover { opacity: 0.9; transform: scale(1.05); }
+
+.tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+.tab-btn { border: none; background: #eee; padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #777; transition: 0.3s; }
+.tab-btn.active { background: var(--primary); color: white; }
+
+.tarefa-item { 
+    list-style: none; padding: 15px; border-radius: 12px; border: 1px solid #f0f0f0; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    animation: slideIn 0.3s ease-out; position: relative;
 }
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-main {
-    width: 100%;
-    max-width: 700px;
-    background: white;
-    padding: 40px;
-    border-radius: 24px;
-    margin: auto;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
-}
+.tarefa-item::before { content: ''; position: absolute; left: 0; top: 0; width: 5px; height: 100%; border-radius: 5px 0 0 5px; }
+.prio-1::before { background: var(--prio-1); } .prio-2::before { background: var(--prio-2); }
+.prio-3::before { background: var(--prio-3); } .prio-4::before { background: var(--prio-4); }
 
-header h1 span { color: var(--primary); }
+.btn-delete { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+.btn-delete:hover { color: var(--danger); }
 
-/* Estilo do Formulário */
-#form-tarefa { display: flex; flex-direction: column; gap: 20px; }
-#titulo, #descricao {
-    border: none;
-    border-bottom: 2px solid #eee;
-    padding: 10px 0;
-    outline: none;
-    transition: 0.3s;
-}
-#titulo:focus, #descricao:focus { border-bottom-color: var(--primary); }
-#titulo { font-weight: bold; font-size: 1.2rem; }
-
-.controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; }
-select, button { border-radius: 12px; border: 1px solid #eee; padding: 10px; cursor: pointer; }
-#btn-adicionar { background: var(--primary); color: white; border: none; font-weight: 600; padding: 0 20px; }
-
-/* ESTILO DAS ABAS */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin: 25px 0;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 10px;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 8px 15px;
-    font-weight: 600;
-    color: var(--text-sub);
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.tab-btn.active {
-    background: var(--primary);
-    color: white;
-}
-
-/* Cards e Texto */
-.tarefa-item {
-    list-style: none;
-    margin-bottom: 15px;
-    padding: 20px;
-    border-radius: 16px;
-    border: 1px solid #f0f0f0;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    transition: 0.3s;
-}
-
-.info { max-width: 80%; word-wrap: break-word; }
-
-/* Prioridade no Hover */
-.tarefa-item::before { content: ''; position: absolute; left: 0; top: 0; width: 6px; height: 100%; transition: 0.4s; }
-.tarefa-item:hover::before { width: 100px; opacity: 0.1; }
-
-.prio-1::before { background: var(--prio-1); }
-.prio-2::before { background: var(--prio-2); }
-.prio-3::before { background: var(--prio-3); }
-.prio-4::before { background: var(--prio-4); }
-
-/* Estados das Tarefas */
-.concluida { opacity: 0.5; background: #f9f9f9; }
-.concluida .info { text-decoration: line-through; }
-
-.btn-status {
-    width: 35px; height: 35px; border-radius: 50%; border: none;
-    display: flex; align-items: center; justify-content: center;
-    background: #eee; font-size: 1rem; transition: 0.3s;
-}
-
-/* Esconder tarefas via JS */
 .hidden { display: none !important; }
