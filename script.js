@@ -1,70 +1,75 @@
 const form = document.querySelector('#form-tarefa');
 const listaUl = document.querySelector('#lista-tarefas');
-const contadorElemento = document.querySelector('#contador');
+const tabBtns = document.querySelectorAll('.tab-btn');
 
-let tarefasAtivas = 0;
+let filtroAtual = 'todas';
 
-const nomesPrioridades = {
-    "1": "Crítico",
-    "2": "Alto",
-    "3": "Médio",
-    "4": "Baixo"
-};
-
+// --- EVENTOS DO FORMULÁRIO ---
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const titulo = document.querySelector('#titulo').value;
     const descricao = document.querySelector('#descricao').value;
     const prioridade = document.querySelector('#prioridade').value;
     const periodo = document.querySelector('#periodo').value;
 
     criarTarefa(titulo, descricao, prioridade, periodo);
-    
     form.reset();
-    atualizarContador(1);
+    aplicarFiltro(); // Re-aplica o filtro atual após adicionar
 });
 
+// --- LÓGICA DE CRIAÇÃO ---
 function criarTarefa(titulo, descricao, prioridade, periodo) {
     const li = document.createElement('li');
     li.className = `tarefa-item prio-${prioridade}`;
-    
-    // Guardamos o nome da prioridade para o CSS usar no hover (Ponto 3)
-    li.setAttribute('data-prioridade-nome', nomesPrioridades[prioridade]);
+    li.dataset.status = 'andamento'; // Nova tarefa nasce em andamento
 
     li.innerHTML = `
         <div class="info">
-            <strong style="display:block; font-size: 1.1rem; margin-bottom: 5px;">${titulo}</strong>
-            <p style="color: var(--text-sub); font-size: 0.9rem; margin: 0;">${descricao}</p>
-            <div style="margin-top: 10px;">
-                <span style="font-size: 0.7rem; background: #f0f0f0; padding: 4px 8px; border-radius: 6px;">
-                    ${periodo.toUpperCase()}
-                </span>
-            </div>
+            <strong style="display:block; margin-bottom: 5px;">${titulo}</strong>
+            <p style="color: #666; font-size: 0.9rem;">${descricao}</p>
+            <small style="display:inline-block; margin-top:10px; background:#f0f0f0; padding:2px 8px; border-radius:4px;">
+                ${periodo.toUpperCase()}
+            </small>
         </div>
-        <button class="btn-status" title="Alternar status">✓</button>
+        <button class="btn-status">✓</button>
     `;
 
-    // Lógica para marcar/desmarcar (Ponto 2)
     const btnStatus = li.querySelector('.btn-status');
     btnStatus.addEventListener('click', () => {
-        const estaConcluida = li.classList.toggle('concluida');
+        const isConcluida = li.classList.toggle('concluida');
+        li.dataset.status = isConcluida ? 'finalizadas' : 'andamento';
         
-        if (estaConcluida) {
-            btnStatus.style.background = '#51cf66';
-            btnStatus.style.color = 'white';
-            atualizarContador(-1);
-        } else {
-            btnStatus.style.background = '#eee';
-            btnStatus.style.color = 'black';
-            atualizarContador(1);
-        }
+        btnStatus.style.background = isConcluida ? '#51cf66' : '#eee';
+        btnStatus.style.color = isConcluida ? 'white' : 'black';
+        
+        aplicarFiltro(); // Atualiza a visão se o usuário estiver em uma aba de filtro
     });
 
-    listaUl.prepend(li); // Adiciona no topo da lista
+    listaUl.prepend(li);
 }
 
-function atualizarContador(valor) {
-    tarefasAtivas += valor;
-    contadorElemento.innerText = tarefasAtivas;
+// --- LÓGICA DAS ABAS (FILTRO) ---
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Estilo visual dos botões
+        document.querySelector('.tab-btn.active').classList.remove('active');
+        btn.classList.add('active');
+
+        filtroAtual = btn.dataset.filter;
+        aplicarFiltro();
+    });
+});
+
+function aplicarFiltro() {
+    const tarefas = document.querySelectorAll('.tarefa-item');
+    
+    tarefas.forEach(tarefa => {
+        if (filtroAtual === 'todas') {
+            tarefa.classList.remove('hidden');
+        } else if (tarefa.dataset.status === filtroAtual) {
+            tarefa.classList.remove('hidden');
+        } else {
+            tarefa.classList.add('hidden');
+        }
+    });
 }
