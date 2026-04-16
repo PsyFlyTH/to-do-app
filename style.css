@@ -1,116 +1,147 @@
 :root {
-    --primary: #4a90e2;
-    --bg: #f0f2f5;
-    --text: #2d3436;
-    --white: #ffffff;
-    /* Cores de Prioridade Suaves */
-    --prio-1: #ff7675;
-    --prio-2: #fab1a0;
-    --prio-3: #74b9ff;
-    --prio-4: #55efc4;
+    --bg: #f8f9fc;
+    --primary: #5c7cfa;
+    --text-main: #2e3440;
+    --text-sub: #4c566a;
+    --prio-1: #ff6b6b;
+    --prio-2: #fcc419;
+    --prio-3: #4dabf7;
+    --prio-4: #51cf66;
 }
 
 body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Segoe UI', Roboto, sans-serif;
     background-color: var(--bg);
-    color: var(--text);
-    margin: 0;
+    color: var(--text-main);
     display: flex;
     justify-content: center;
-    padding: 20px;
+    margin: 0;
+    padding: 40px 20px;
 }
 
 main {
     width: 100%;
-    max-width: 800px;
-    background: var(--white);
+    max-width: 700px;
+    background: white;
     padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
 }
 
-h1 span {
-    font-weight: 300;
-    color: #999;
-}
+header h1 { margin: 0; font-size: 1.8rem; }
+header h1 span { color: var(--primary); }
+header p { color: var(--text-sub); margin-top: 5px; font-size: 0.9rem; }
 
-/* Formulário Profissional */
-#form-tarefa {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
+/* Estilo dos Campos (Ponto 4) */
+#form-tarefa { display: flex; flex-direction: column; gap: 20px; }
 
-.input-group input, .input-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #dfe6e9;
-    border-radius: 8px;
+#titulo, #descricao {
+    border: none;
+    border-bottom: 2px solid #eee; /* Apenas linha inferior para visual limpo */
+    padding: 10px 0;
     font-size: 1rem;
-    box-sizing: border-box;
+    outline: none;
+    transition: 0.3s;
+    resize: none;
 }
 
-.controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 10px;
+#titulo:focus, #descricao:focus {
+    border-bottom-color: var(--primary);
 }
+
+#titulo { font-weight: bold; font-size: 1.2rem; }
+
+.controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; }
 
 select, button {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #dfe6e9;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 #btn-adicionar {
     background: var(--primary);
     color: white;
     border: none;
-    font-weight: bold;
+    font-weight: 600;
+    padding: 0 25px;
 }
 
-#btn-adicionar:hover {
-    background: #357abd;
-    transform: translateY(-2px);
-}
-
-/* Estilização dos Cards */
+/* Card da Tarefa (Ponto 1 e 3) */
 .tarefa-item {
     list-style: none;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 16px;
     background: #fff;
-    border: 1px solid #eee;
-    margin-bottom: 12px;
-    padding: 15px 20px;
-    border-radius: 10px;
+    border: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    transition: 0.3s ease;
-    border-left: 8px solid #ccc;
+    align-items: flex-start;
+    position: relative;
+    overflow: hidden; /* Garante que o pseudo-elemento da cor não escape */
+    transition: 0.3s;
 }
 
-.tarefa-item:hover {
-    transform: translateX(5px);
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+/* Quebra de texto (Ponto 1) */
+.info {
+    max-width: 85%;
+    word-wrap: break-word; /* Quebra palavras longas */
+    overflow-wrap: break-word;
 }
 
-/* Classes de Prioridade Dinâmicas */
-.prio-1 { border-left-color: var(--prio-1); }
-.prio-2 { border-left-color: var(--prio-2); }
-.prio-3 { border-left-color: var(--prio-3); }
-.prio-4 { border-left-color: var(--prio-4); }
+/* Indicador de Prioridade Interativo (Ponto 3) */
+.tarefa-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    transition: 0.4s;
+}
 
-.btn-concluir {
-    background: #f1f2f6;
+/* Ao passar o mouse, a cor expande e mostra o texto */
+.tarefa-item:hover::before {
+    width: 100px;
+    opacity: 0.15;
+}
+
+.tarefa-item:hover::after {
+    content: attr(data-prioridade-nome);
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Cores por Nível */
+.prio-1::before, .prio-1:hover::after { background-color: var(--prio-1); color: var(--prio-1); }
+.prio-2::before, .prio-2:hover::after { background-color: var(--prio-2); color: var(--prio-2); }
+.prio-3::before, .prio-3:hover::after { background-color: var(--prio-3); color: var(--prio-3); }
+.prio-4::before, .prio-4:hover::after { background-color: var(--prio-4); color: var(--prio-4); }
+
+/* Estado Concluído (Ponto 2) */
+.tarefa-item.concluida {
+    opacity: 0.5;
+    background: #f9f9f9;
+}
+.tarefa-item.concluida .info { text-decoration: line-through; }
+
+.btn-status {
+    background: #eee;
     border: none;
-    font-size: 1.2rem;
-    padding: 5px 12px;
-}
-
-.btn-concluir:hover {
-    background: #55efc4;
-    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
 }
