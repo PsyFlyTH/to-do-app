@@ -1,46 +1,190 @@
-/* Adicione ou substitua estas partes no seu style.css */
-
-.actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+/* 1. VARIÁVEIS E DEFINIÇÕES GERAIS */
+:root {
+    --bg: #f4f7fb;
+    --primary: #4361ee;
+    --danger: #ff4757;
+    --text-main: #2f3542;
+    --text-sub: #747d8c;
+    --white: #ffffff;
+    
+    /* Cores de Prioridade Suaves */
+    --prio-1: #ff6b6b; /* Crítico */
+    --prio-2: #f9ca24; /* Alto */
+    --prio-3: #48dbfb; /* Médio */
+    --prio-4: #1dd1a1; /* Baixo */
 }
 
-.btn-check {
-    background: #eee;
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 40px 20px;
+}
+
+main {
+    width: 100%;
+    max-width: 650px;
+    background: var(--white);
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 { margin: 0; font-size: 1.8rem; }
+header h1 span { color: var(--primary); font-weight: 800; }
+header p { color: var(--text-sub); font-size: 0.9rem; margin-top: 5px; text-transform: capitalize; }
+
+/* 2. FORMULÁRIO (DESIGN LIMPO - PONTO 4) */
+#form-tarefa {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #fdfdfd;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px dashed #ddd;
+    margin-bottom: 25px;
+}
+
+#titulo, #descricao {
     border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    padding: 8px 0;
+    transition: 0.3s;
+    font-family: inherit;
+}
+
+#titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-bottom: 2px solid #eee;
+}
+
+#titulo:focus { border-bottom-color: var(--primary); }
+
+#descricao {
+    font-size: 0.95rem;
+    resize: none;
+    color: var(--text-sub);
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+select, #btn-adicionar {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
     cursor: pointer;
-    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+#btn-adicionar {
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-weight: 700;
+    padding: 0 20px;
+    transition: 0.2s;
+}
+
+#btn-adicionar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(67, 97, 238, 0.3);
+}
+
+/* 3. ABAS (TABS) */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.tab-btn {
+    border: none;
+    background: #eee;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: #777;
+    cursor: pointer;
     transition: 0.3s;
 }
 
-.concluida .btn-check {
+.tab-btn.active {
     background: var(--primary);
     color: white;
 }
 
-.btn-check:hover {
-    background: #51cf66;
-    color: white;
+/* 4. CARDS DE TAREFA (PONTOS 1 E 3) */
+.tarefa-item {
+    list-style: none;
+    background: white;
+    padding: 18px 22px;
+    border-radius: 16px;
+    border: 1px solid #f0f0f0;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden; /* Importante para o efeito da prioridade */
+    animation: fadeIn 0.4s ease-out;
 }
 
-.btn-delete {
-    background: none;
-    border: none;
-    color: #ddd;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: 0.3s;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.btn-delete:hover {
-    color: var(--danger);
+/* Quebra de texto (Ponto 1) */
+.info {
+    max-width: 75%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-.concluida .info {
-    text-decoration: line-through;
-    opacity: 0.6;
+.info strong { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+.info p { font-size: 0.85rem; color: var(--text-sub); margin: 0; }
+.info small { 
+    display: inline-block; 
+    margin-top: 8px; 
+    background: #f1f2f6; 
+    padding: 2px 8px; 
+    border-radius: 4px; 
+    font-size: 0.7rem; 
+    font-weight: 700;
 }
+
+/* Indicador Lateral de Prioridade (Ponto 3) */
+.tarefa-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    transition: 0.3s ease;
+}
+
+/* Efeito expandir prioridade no hover */
+.tarefa-item:hover::before {
+    width: 8px;
+}
+
+/* Co
