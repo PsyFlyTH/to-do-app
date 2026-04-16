@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Flow - Empresa X</title>
+    <title>TaskFlow Pro - Empresa X</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,46 +11,45 @@
     <main>
         <header>
             <h1>Task<span>Flow</span></h1>
-            <p>Gerenciamento de Fluxo Interno</p>
+            <p id="data-atual"></p>
         </header>
 
         <section id="entrada-tarefa">
             <form id="form-tarefa">
-                <input type="text" id="titulo" placeholder="Título da tarefa..." required>
-                <textarea id="descricao" placeholder="Descreva os detalhes da tarefa..."></textarea>
+                <input type="text" id="titulo" placeholder="O que precisa ser feito?" required maxlength="50">
+                <textarea id="descricao" placeholder="Adicione detalhes (opcional)..." rows="2"></textarea>
                 
                 <div class="controls">
                     <select id="prioridade" required>
-                        <option value="" disabled selected>Prioridade</option>
-                        <option value="1">Nível 1 (Crítico)</option>
-                        <option value="2">Nível 2 (Alto)</option>
-                        <option value="3">Nível 3 (Médio)</option>
-                        <option value="4">Nível 4 (Baixo)</option>
+                        <option value="1">🔴 Crítico</option>
+                        <option value="2">🟠 Alto</option>
+                        <option value="3">🔵 Médio</option>
+                        <option value="4" selected>🟢 Baixo</option>
                     </select>
 
-                    <select id="periodo" required>
-                        <option value="" disabled selected>Prazo</option>
+                    <select id="periodo">
                         <option value="diario">Diário</option>
                         <option value="semanal">Semanal</option>
                         <option value="mensal">Mensal</option>
                         <option value="anual">Anual</option>
                     </select>
 
-                    <button type="submit" id="btn-adicionar">Criar Tarefa</button>
+                    <button type="submit" id="btn-adicionar">Criar Task</button>
                 </div>
             </form>
         </section>
 
-        <div class="divider"></div>
-
         <nav class="tabs">
             <button class="tab-btn active" data-filter="todas">Todas</button>
-            <button class="tab-btn" data-filter="andamento">Em Andamento</button>
-            <button class="tab-btn" data-filter="finalizadas">Finalizadas</button>
+            <button class="tab-btn" data-filter="andamento">Pendentes</button>
+            <button class="tab-btn" data-filter="finalizadas">Concluídas</button>
         </nav>
 
         <section id="lista-container">
             <ul id="lista-tarefas"></ul>
+            <div id="empty-state" class="hidden">
+                <p>🎉 Nenhuma tarefa por aqui!</p>
+            </div>
         </section>
     </main>
 
