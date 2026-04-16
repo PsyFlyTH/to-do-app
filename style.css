@@ -1,42 +1,46 @@
-:root {
-    --bg: #f4f7fb;
-    --primary: #4361ee;
-    --danger: #ff4757;
-    --prio-1: #ff6b6b; --prio-2: #f9ca24; --prio-3: #48dbfb; --prio-4: #1dd1a1;
+/* Adicione ou substitua estas partes no seu style.css */
+
+.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
-body { font-family: 'Inter', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; color: #2f3542; }
-
-main { width: 100%; max-width: 650px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
-
-header { text-align: center; margin-bottom: 30px; }
-header h1 span { color: var(--primary); font-weight: 800; }
-
-#form-tarefa { display: flex; flex-direction: column; gap: 15px; background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px dashed #ddd; }
-#titulo, #descricao { border: none; background: transparent; outline: none; width: 100%; }
-#titulo { font-size: 1.2rem; font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-
-.controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; }
-select, #btn-adicionar { padding: 10px; border-radius: 10px; border: 1px solid #eee; cursor: pointer; font-size: 0.9rem; }
-#btn-adicionar { background: var(--primary); color: white; border: none; transition: 0.2s; }
-#btn-adicionar:hover { opacity: 0.9; transform: scale(1.05); }
-
-.tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-.tab-btn { border: none; background: #eee; padding: 8px 16px; border-radius: 20px; font-weight: 600; color: #777; transition: 0.3s; }
-.tab-btn.active { background: var(--primary); color: white; }
-
-.tarefa-item { 
-    list-style: none; padding: 15px; border-radius: 12px; border: 1px solid #f0f0f0; margin-bottom: 10px;
-    display: flex; justify-content: space-between; align-items: center;
-    animation: slideIn 0.3s ease-out; position: relative;
+.btn-check {
+    background: #eee;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
 }
-@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.tarefa-item::before { content: ''; position: absolute; left: 0; top: 0; width: 5px; height: 100%; border-radius: 5px 0 0 5px; }
-.prio-1::before { background: var(--prio-1); } .prio-2::before { background: var(--prio-2); }
-.prio-3::before { background: var(--prio-3); } .prio-4::before { background: var(--prio-4); }
+.concluida .btn-check {
+    background: var(--primary);
+    color: white;
+}
 
-.btn-delete { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
-.btn-delete:hover { color: var(--danger); }
+.btn-check:hover {
+    background: #51cf66;
+    color: white;
+}
 
-.hidden { display: none !important; }
+.btn-delete {
+    background: none;
+    border: none;
+    color: #ddd;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-delete:hover {
+    color: var(--danger);
+}
+
+.concluida .info {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
