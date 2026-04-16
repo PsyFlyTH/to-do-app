@@ -43,10 +43,13 @@
 
         <div class="divider"></div>
 
+        <nav class="tabs">
+            <button class="tab-btn active" data-filter="todas">Todas</button>
+            <button class="tab-btn" data-filter="andamento">Em Andamento</button>
+            <button class="tab-btn" data-filter="finalizadas">Finalizadas</button>
+        </nav>
+
         <section id="lista-container">
-            <div class="stats">
-                <span>Total de tarefas: <strong id="contador">0</strong></span>
-            </div>
             <ul id="lista-tarefas"></ul>
         </section>
     </main>
