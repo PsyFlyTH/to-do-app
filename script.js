@@ -2,53 +2,69 @@ const form = document.querySelector('#form-tarefa');
 const listaUl = document.querySelector('#lista-tarefas');
 const contadorElemento = document.querySelector('#contador');
 
-let totalTarefas = 0;
+let tarefasAtivas = 0;
+
+const nomesPrioridades = {
+    "1": "Crítico",
+    "2": "Alto",
+    "3": "Médio",
+    "4": "Baixo"
+};
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Captura dos dados
-    const tarefa = {
-        titulo: document.querySelector('#titulo').value,
-        descricao: document.querySelector('#descricao').value,
-        prioridade: document.querySelector('#prioridade').value,
-        periodo: document.querySelector('#periodo').value
-    };
+    const titulo = document.querySelector('#titulo').value;
+    const descricao = document.querySelector('#descricao').value;
+    const prioridade = document.querySelector('#prioridade').value;
+    const periodo = document.querySelector('#periodo').value;
 
-    criarCardTarefa(tarefa);
+    criarTarefa(titulo, descricao, prioridade, periodo);
+    
     form.reset();
     atualizarContador(1);
 });
 
-function criarCardTarefa(tarefa) {
+function criarTarefa(titulo, descricao, prioridade, periodo) {
     const li = document.createElement('li');
-    li.className = `tarefa-item prio-${tarefa.prioridade}`;
+    li.className = `tarefa-item prio-${prioridade}`;
+    
+    // Guardamos o nome da prioridade para o CSS usar no hover (Ponto 3)
+    li.setAttribute('data-prioridade-nome', nomesPrioridades[prioridade]);
 
     li.innerHTML = `
         <div class="info">
-            <strong style="display:block; font-size: 1.1rem;">${tarefa.titulo}</strong>
-            <small style="color: #666;">${tarefa.descricao}</small>
-            <div style="margin-top: 8px;">
-                <span style="font-size: 0.75rem; background: #eee; padding: 3px 8px; border-radius: 10px;">
-                    ⏱ ${tarefa.periodo.toUpperCase()}
+            <strong style="display:block; font-size: 1.1rem; margin-bottom: 5px;">${titulo}</strong>
+            <p style="color: var(--text-sub); font-size: 0.9rem; margin: 0;">${descricao}</p>
+            <div style="margin-top: 10px;">
+                <span style="font-size: 0.7rem; background: #f0f0f0; padding: 4px 8px; border-radius: 6px;">
+                    ${periodo.toUpperCase()}
                 </span>
             </div>
         </div>
-        <button class="btn-concluir" title="Marcar como finalizada">✓</button>
+        <button class="btn-status" title="Alternar status">✓</button>
     `;
 
-    // Evento de conclusão
-    li.querySelector('.btn-concluir').addEventListener('click', function() {
-        li.style.opacity = '0.4';
-        li.style.textDecoration = 'line-through';
-        this.remove(); // Remove o botão após concluir
-        atualizarContador(-1);
+    // Lógica para marcar/desmarcar (Ponto 2)
+    const btnStatus = li.querySelector('.btn-status');
+    btnStatus.addEventListener('click', () => {
+        const estaConcluida = li.classList.toggle('concluida');
+        
+        if (estaConcluida) {
+            btnStatus.style.background = '#51cf66';
+            btnStatus.style.color = 'white';
+            atualizarContador(-1);
+        } else {
+            btnStatus.style.background = '#eee';
+            btnStatus.style.color = 'black';
+            atualizarContador(1);
+        }
     });
 
-    listaUl.appendChild(li);
+    listaUl.prepend(li); // Adiciona no topo da lista
 }
 
 function atualizarContador(valor) {
-    totalTarefas += valor;
-    contadorElemento.innerText = totalTarefas;
+    tarefasAtivas += valor;
+    contadorElemento.innerText = tarefasAtivas;
 }
