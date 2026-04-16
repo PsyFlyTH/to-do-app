@@ -2,74 +2,81 @@ const form = document.querySelector('#form-tarefa');
 const listaUl = document.querySelector('#lista-tarefas');
 const tabBtns = document.querySelectorAll('.tab-btn');
 
+// Carregar tarefas ao iniciar
+let tarefas = JSON.parse(localStorage.getItem('tasks')) || [];
 let filtroAtual = 'todas';
 
-// --- EVENTOS DO FORMULÁRIO ---
+// Iniciar app
+renderizarTarefas();
+
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const titulo = document.querySelector('#titulo').value;
-    const descricao = document.querySelector('#descricao').value;
-    const prioridade = document.querySelector('#prioridade').value;
-    const periodo = document.querySelector('#periodo').value;
-
-    criarTarefa(titulo, descricao, prioridade, periodo);
+    const novaTask = {
+        id: Date.now(),
+        titulo: document.querySelector('#titulo').value,
+        descricao: document.querySelector('#descricao').value,
+        prioridade: document.querySelector('#prioridade').value,
+        periodo: document.querySelector('#periodo').value,
+        status: 'andamento'
+    };
+    tarefas.push(novaTask);
+    salvarERenderizar();
     form.reset();
-    aplicarFiltro(); // Re-aplica o filtro atual após adicionar
 });
 
-// --- LÓGICA DE CRIAÇÃO ---
-function criarTarefa(titulo, descricao, prioridade, periodo) {
-    const li = document.createElement('li');
-    li.className = `tarefa-item prio-${prioridade}`;
-    li.dataset.status = 'andamento'; // Nova tarefa nasce em andamento
+function renderizarTarefas() {
+    listaUl.innerHTML = '';
+    const filtradas = tarefas.filter(t => filtroAtual === 'todas' || t.status === filtroAtual);
+    
+    // Ordenar por prioridade (1 no topo)
+    filtradas.sort((a, b) => a.prioridade - b.prioridade);
 
-    li.innerHTML = `
-        <div class="info">
-            <strong style="display:block; margin-bottom: 5px;">${titulo}</strong>
-            <p style="color: #666; font-size: 0.9rem;">${descricao}</p>
-            <small style="display:inline-block; margin-top:10px; background:#f0f0f0; padding:2px 8px; border-radius:4px;">
-                ${periodo.toUpperCase()}
-            </small>
-        </div>
-        <button class="btn-status">✓</button>
-    `;
-
-    const btnStatus = li.querySelector('.btn-status');
-    btnStatus.addEventListener('click', () => {
-        const isConcluida = li.classList.toggle('concluida');
-        li.dataset.status = isConcluida ? 'finalizadas' : 'andamento';
-        
-        btnStatus.style.background = isConcluida ? '#51cf66' : '#eee';
-        btnStatus.style.color = isConcluida ? 'white' : 'black';
-        
-        aplicarFiltro(); // Atualiza a visão se o usuário estiver em uma aba de filtro
+    filtradas.forEach(t => {
+        const li = document.createElement('li');
+        li.className = `tarefa-item prio-${t.prioridade} ${t.status === 'finalizadas' ? 'concluida' : ''}`;
+        li.innerHTML = `
+            <div class="info" onclick="toggleStatus(${t.id})">
+                <strong>${t.titulo}</strong>
+                <p style="font-size:0.8rem; color:#888; margin:5px 0;">${t.descricao}</p>
+                <small>${t.periodo.toUpperCase()}</small>
+            </div>
+            <button class="btn-delete" onclick="deletarTarefa(${t.id})">✕</button>
+        `;
+        listaUl.appendChild(li);
     });
 
-    listaUl.prepend(li);
+    document.getElementById('empty-state').className = filtradas.length === 0 ? '' : 'hidden';
 }
 
-// --- LÓGICA DAS ABAS (FILTRO) ---
+function toggleStatus(id) {
+    tarefas = tarefas.map(t => {
+        if(t.id === id) t.status = t.status === 'andamento' ? 'finalizadas' : 'andamento';
+        return t;
+    });
+    salvarERenderizar();
+}
+
+function deletarTarefa(id) {
+    if(confirm("Deseja excluir esta tarefa?")) {
+        tarefas = tarefas.filter(t => t.id !== id);
+        salvarERenderizar();
+    }
+}
+
+function salvarERenderizar() {
+    localStorage.setItem('tasks', JSON.stringify(tarefas));
+    renderizarTarefas();
+}
+
+// Filtros das Abas
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        // Estilo visual dos botões
         document.querySelector('.tab-btn.active').classList.remove('active');
         btn.classList.add('active');
-
         filtroAtual = btn.dataset.filter;
-        aplicarFiltro();
+        renderizarTarefas();
     });
 });
 
-function aplicarFiltro() {
-    const tarefas = document.querySelectorAll('.tarefa-item');
-    
-    tarefas.forEach(tarefa => {
-        if (filtroAtual === 'todas') {
-            tarefa.classList.remove('hidden');
-        } else if (tarefa.dataset.status === filtroAtual) {
-            tarefa.classList.remove('hidden');
-        } else {
-            tarefa.classList.add('hidden');
-        }
-    });
-}
+// Data no Header
+document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-br', { weekday: 'long', day: 'numeric', month: 'long' });
